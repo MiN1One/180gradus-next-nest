@@ -1,4 +1,5 @@
-import App, { AppContext, AppProps } from "next/app";
+import { AppProps } from "next/app";
+import { appWithTranslation,  } from 'next-i18next';
 
 const NextApp = ({ Component, pageProps }: AppProps) => {
   return (
@@ -6,9 +7,4 @@ const NextApp = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-NextApp.getInitialProps = (context: AppContext) => {
-  const appProps = App.getInitialProps(context);
-  return { ...appProps, };
-};
-
-export default NextApp;
+export default appWithTranslation(NextApp);

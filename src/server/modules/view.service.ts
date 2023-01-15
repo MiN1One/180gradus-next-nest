@@ -9,14 +9,6 @@ interface IParsedQueryWithNextQuery extends UrlWithParsedQuery {
   query: UrlWithParsedQuery['query'] & NextParsedUrlQuery;
 }
 
-declare global {
-  interface FastifyRequestWithParams extends FastifyRequest {
-    params: FastifyRequest['params'] & {
-      locale?: string;
-    }
-  }
-}
-
 @Injectable()
 export class ViewService {
   nextServer: NextServer;
