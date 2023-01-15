@@ -11,7 +11,7 @@ import { NextServer as NextServerType } from 'next/dist/server/next';
 import { join } from 'path';
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import '@shared/common/declarations';
+import '@shared/declarations';
 
 declare const module: any;
 
@@ -19,7 +19,7 @@ async function bootstrap() {
   const adapter = new FastifyAdapter();
 
   const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
+    AppModule.register(),
     adapter
   );
 
