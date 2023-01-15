@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { NextServer, RequestHandler } from 'next/dist/server/next';
 import { FastifyReply, FastifyRequest } from "fastify";
 import { parse, UrlWithParsedQuery } from 'url';
-import * as locales from '../../../locales';
+import * as locales from '../../../../locales';
 import { NextParsedUrlQuery } from 'next/dist/server/request-meta';
 
 interface IParsedQueryWithNextQuery extends UrlWithParsedQuery {
