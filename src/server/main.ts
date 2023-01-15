@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import appConfig from './app.config';
 import { ConfigType } from '@nestjs/config';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { ViewModule } from './modules/view/view.module';
 import { ViewService } from './modules/view/view.service';
 import NextServer from 'next';
@@ -35,6 +35,11 @@ async function bootstrap() {
     prefix: staticFilesPathPrefix,
     root: join(process.cwd(),  '/' + staticFilesDir)
   });
+
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    transform: true
+  }));
 
   let nextServer: NextServerType;
 
@@ -80,4 +85,4 @@ async function bootstrap() {
   }
 }
 
-bootstrap();
+bootstrap().catch(er => Logger.error(er, 'Bootstrap'));

@@ -8,6 +8,7 @@ import { ViewModule } from './modules/view/view.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
+      cache: true,
       isGlobal: true,
       load: [AppConfig]
     }),
