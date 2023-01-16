@@ -1,5 +1,5 @@
 import { Logger } from "@nestjs/common";
-import { Query } from "mongoose";
+import { model, Model, Query } from "mongoose";
 
 const DEFAULT_LIMIT_COUNT = 10;
 const featureQueryKeys = ['project', 'page', 'limit', 'search', 'sort'];
@@ -75,18 +75,3 @@ export class ApiFeatures<DocumentType> {
     return this;
   }
 }
-
-export const catchAsync = (
-  cb: () => Promise<any>, 
-  defaultReturn?: any, 
-  context?: string,
-  errorCallback?: () => any
-) => (
-  cb().catch(er => {
-    if (typeof errorCallback === 'function') {
-      return errorCallback();
-    }
-    Logger.error(er, context);
-    return defaultReturn || er;
-  })
-);

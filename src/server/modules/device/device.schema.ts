@@ -22,6 +22,17 @@ export class Device implements IDevice {
   })
   deviceType: DeviceType;
 
+  @Prop({
+    type: String,
+    required: true,
+    index: 'text',
+    unique: true,
+  })
+  name: string;
+
+  @Prop({ type: String })
+  vendor: string;
+
   @Prop({ type: ImageSchema, required: true })
   image: IImage;
 

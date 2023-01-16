@@ -15,4 +15,6 @@ export interface IDevice extends MongoDocument {
   tags: string[];
   products: string[] | IProduct[];
   image: IImage;
+  name: string;
+  vendor?: string;
 }

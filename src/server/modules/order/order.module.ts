@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { getModelToken, MongooseModule } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { FactoryModule } from '../factory/factory.module';
 import { OrderController } from './order.controller';
 import { Order, OrderSchema } from './order.schema';
 import { OrderService } from './order.service';
@@ -8,9 +10,15 @@ import { OrderService } from './order.service';
   controllers: [OrderController],
   providers: [OrderService],
   imports: [
-    MongooseModule.forFeature([
-      { name: Order.name, schema: OrderSchema }
-    ])
+    FactoryModule.forFeatureAsync({
+      useFactory: (model: Model<any>) => ({ model }),
+      inject: [getModelToken(Order.name)],
+      imports: [
+        MongooseModule.forFeature([
+          { name: Order.name, schema: OrderSchema }
+        ])
+      ]
+    }),
   ]
 })
 export class OrderModule {}
