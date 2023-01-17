@@ -14,9 +14,10 @@ import { OrderService } from './order.service';
       useFactory: (model: Model<any>) => ({ model }),
       inject: [getModelToken(Order.name)],
       imports: [
-        MongooseModule.forFeature([
-          { name: Order.name, schema: OrderSchema }
-        ])
+        MongooseModule.forFeature([{
+          name: Order.name,
+          schema: OrderSchema
+        }])
       ]
     }),
   ]

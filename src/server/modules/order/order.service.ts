@@ -16,4 +16,16 @@ export class OrderService {
   createOrder(order: IOrder) {
     return this.factoryService.createDocument(order);
   }
+
+  deleteOrder(orderId: string) {
+    return this.factoryService.deleteDocument(orderId);
+  }
+
+  updateOrder(orderId: string, order: Partial<IOrder>) {
+    return this.factoryService.updateDocument(orderId, order);
+  }
+
+  getOrder(orderId: string) {
+    return this.factoryService.getDocument(orderId);
+  }
 }

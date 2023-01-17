@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule, ConfigType } from '@nestjs/config';
 import AppConfig from './app.config';
 import { AppController } from './app.controller';
@@ -13,12 +13,9 @@ import { ProductModule } from './modules/product/product.module';
 
 declare const module: any;
 
-@Module({
-  imports: [OrderModule, UserModule],
-  providers: [UserService]
-})
+@Module({})
 export class AppModule {
-  static register() {
+  static register(): DynamicModule {
     let mongooseModule = module?.hot?.data?.mongooseModule;
     if (!mongooseModule) {
       mongooseModule = MongooseModule.forRootAsync({
@@ -36,7 +33,6 @@ export class AppModule {
 
     return {
       module: AppModule,
-      DeviceModule,
       imports: [
         ConfigModule.forRoot({
           cache: true,

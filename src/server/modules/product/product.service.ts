@@ -1,85 +1,30 @@
-import { Injectable, Logger, NotFoundException } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
+import { Injectable } from "@nestjs/common";
 import { IProduct } from "@shared/types/product.types";
-import { Model } from "mongoose";
-import { ApiFeatures } from "../utils/api.utils";
-import { Product, ProductDocument } from "./product.schema";
+import { FactoryService } from "../factory/factory.service";
 
 @Injectable()
 export class ProductService {
   constructor(
-    @InjectModel(Product.name)
-    readonly productModel: Model<ProductDocument>
+    readonly factoryService: FactoryService
   ) {}
  
-  async getProducts(query: Record<string, string>) {
-    try {
-      const { mongooseQuery } = new ApiFeatures(
-        this.productModel.find(), 
-        query
-      )
-        .filter()
-        .limit()
-        .paginate()
-        .project()
-        .search()
-        .sort();
-
-      const products = await mongooseQuery;
-      return products;
-    } catch (er) {
-      Logger.error('ProductService:getProducts');
-      return [];
-    } 
+  getProducts(query: Record<string, string>) {
+    return this.factoryService.getAllDocuments(query);
   }
 
-  async getProduct(productId: string) {
-    try {
-      const product = await this.productModel.findById(productId);
-      if (!product) {
-        throw new NotFoundException('Product with this id is not found');
-      }
-      return product;
-    } catch (er) {
-      Logger.error(er, 'ProductService:getProduct');
-      return {};
-    }
+  getProduct(productId: string) {
+    return this.factoryService.getDocument(productId);
   }
 
-  async updateProduct(productId: string, product: IProduct) {
-    try {
-      const updatedProduct = await this.productModel.findByIdAndUpdate(
-        productId,
-        product,
-        { new: true }
-      );
-      return updatedProduct;
-    } catch (er) {
-      Logger.error(er, 'ProductService:updateProduct');
-      return {}
-    }
+  updateProduct(productId: string, product: IProduct) {
+    return this.factoryService.updateDocument(productId, product);
   }
 
-  async deleteProduct(productId: string) {
-    try {
-      const deletedProduct = await this.productModel.findByIdAndDelete(productId);
-      if (!deletedProduct) {
-        throw new NotFoundException('Product with this id is not found');
-      }
-    } catch (er) {
-      Logger.error(er, 'ProductService:deleteProduct');
-    }
-    return null;
+  deleteProduct(productId: string) {
+    return this.factoryService.deleteDocument(productId);
   }
 
-  async createProduct(product: IProduct) {
-    try {
-      const createdProduct = await this.productModel.create(product);
-      await createdProduct.save();
-      return createdProduct;
-    } catch (er) {
-      Logger.error(er, 'ProductService:createProduct');
-      return {};
-    }
+  createProduct(product: IProduct) {
+    return this.factoryService.createDocument(product);
   }
 }

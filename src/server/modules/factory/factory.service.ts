@@ -6,12 +6,14 @@ import { FactoryModuleOptions, FACTORY_MODULE_TOKEN } from "./factory.module-def
 @Injectable()
 export class FactoryService {
   model: Model<HydratedDocument<any>>;
+  modelName: string;
 
   constructor(
     @Inject(FACTORY_MODULE_TOKEN)
     factoryModuleOptions: FactoryModuleOptions
   ) {
     this.model = factoryModuleOptions.model;
+    this.modelName = this.model.collection.name;
   }
 
   async getAllDocuments(query: Record<string, string>) {
@@ -27,7 +29,7 @@ export class FactoryService {
       const documents = await mongooseQuery;
       return documents;
     } catch (er) {
-      Logger.error(er, `FactoryService:getAllDocuments:${this.model.name}`);
+      Logger.error(er, `FactoryService:getAllDocuments:${this.modelName}`);
       return [];
     }
   }
@@ -40,7 +42,7 @@ export class FactoryService {
       }
       return document;
     } catch (er) {
-      Logger.error(er, `FactoryService:getDocument:${this.model.name}`);
+      Logger.error(er, `FactoryService:getDocument:${this.modelName}`);
       return {};
     }
   }
@@ -54,8 +56,8 @@ export class FactoryService {
       );
       return updatedDocument;
     } catch (er) {
-      Logger.error(er, `FactoryService:updateDocument:${this.model.name}`);
-      return {}
+      Logger.error(er, `FactoryService:updateDocument:${this.modelName}`);
+      return {};
     }
   }
 
@@ -66,7 +68,7 @@ export class FactoryService {
         throw new NotFoundException('Document with this id is not found');
       }
     } catch (er) {
-      Logger.error(er, `FactoryService:deleteDocument:${this.model.name}`);
+      Logger.error(er, `FactoryService:deleteDocument:${this.modelName}`);
     }
     return null;
   }
@@ -77,7 +79,7 @@ export class FactoryService {
       await createdDocument.save();
       return createdDocument;
     } catch (er) {
-      Logger.error(er, `FactoryService:createDocument:${this.model.name}`);
+      Logger.error(er, `FactoryService:createDocument:${this.modelName}`);
       return {};
     }
   }
