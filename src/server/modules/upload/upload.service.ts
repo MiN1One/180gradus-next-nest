@@ -63,9 +63,6 @@ export class UploadService {
 
   async uploadImages(files: IFile[], subpath?: string) {
     try {
-      if (subpath) {
-         
-      }
       const path = '/images' + (subpath ? `/${subpath}/` : '/');
       const promises = files.map(file => (
         this.compressImages(file, path))
