@@ -8,4 +8,5 @@ export default registerAs('appConfig', () => ({
   isBuild: (process.env.NODE_ENV as any) === 'build',
   dbConnection: process.env.DB_CONNECTION,
   filesSaveDir: process.env.FILES_SAVE_DIR,
+  imagesSaveSubpath: process.env.IMAGES_SAVE_SUBPATH
 }));

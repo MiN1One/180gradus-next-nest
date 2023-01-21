@@ -8,7 +8,7 @@ import AppConfig from "@server/app.config";
 import { IFile, IImage, IMAGE_QUALITIES } from "@shared/types/common.types";
 import * as sharp from 'sharp';
 import { join } from 'path';
-import { createDir } from "@server/utils/fs.utils";
+import { createDir, removeDir } from "@server/utils/fs.utils";
 
 @Injectable()
 export class UploadService {
@@ -21,7 +21,7 @@ export class UploadService {
     this.saveDir = join(process.cwd(), '/', this.appConfig.filesSaveDir);
 
     createDir(this.saveDir);
-    createDir(this.saveDir + '/images');
+    createDir(this.saveDir + this.appConfig.imagesSaveSubpath);
   }
 
   async compressImages(image: IFile, path: string): Promise<IImage[]> {
@@ -63,7 +63,11 @@ export class UploadService {
 
   async uploadImages(files: IFile[], subpath?: string) {
     try {
-      const path = '/images' + (subpath ? `/${subpath}/` : '/');
+      let path = this.appConfig.imagesSaveSubpath + '/';
+      if (subpath) {
+        path += `${subpath}/`;
+        await removeDir(this.saveDir + path);
+      }
       const promises = files.map(file => (
         this.compressImages(file, path))
       );
