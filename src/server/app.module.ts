@@ -7,9 +7,9 @@ import { ViewModule } from './modules/view/view.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DeviceModule } from './modules/device/device.module';
 import { OrderModule } from './modules/order/order.module';
-import { UserService } from './modules/user/user.service';
 import { UserModule } from './modules/user/user.module';
 import { ProductModule } from './modules/product/product.module';
+import { UploadModule } from './modules/upload/upload.module';
 
 declare const module: any;
 
@@ -45,6 +45,7 @@ export class AppModule {
         ProductModule,
         OrderModule,
         DeviceModule,
+        UploadModule,
       ],
       controllers: [AppController],
       providers: [AppService],

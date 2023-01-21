@@ -26,7 +26,7 @@ export class ViewService {
     }
   }
 
-  getNextQuery(req: FastifyRequestWithParams) {
+  getNextQuery(req: FastifyRequestWithLocale) {
     const { params: { locale }, url } = req;
     const parsedUrl: IParsedQueryWithNextQuery = parse(url, true);
     let pathname = parsedUrl.path.toLowerCase();

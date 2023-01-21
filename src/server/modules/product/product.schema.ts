@@ -9,8 +9,11 @@ class Image implements IImage {
   @Prop({ type: String, required: true })
   src: string;
 
-  @Prop({ type: String, default: 'Product Image' })
-  alt: string;
+  @Prop({ type: Number })
+  width: number;
+
+  @Prop({ type: Number })
+  height: number;
 }
 
 @Schema({ timestamps: true })

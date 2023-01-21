@@ -12,6 +12,7 @@ import { join } from 'path';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import '@shared/declarations';
+import fileUpload from 'fastify-file-upload';
 
 declare const module: any;
 
@@ -30,6 +31,8 @@ async function bootstrap() {
     staticFilesPathPrefix,
     isBuild,
   } = app.get<ConfigType<typeof appConfig>>(appConfig.KEY);
+
+  await app.register(fileUpload);
 
   app.useStaticAssets({
     prefix: staticFilesPathPrefix,

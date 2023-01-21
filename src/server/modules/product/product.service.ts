@@ -13,7 +13,7 @@ export class ProductService {
   }
 
   getProduct(productId: string) {
-    return this.factoryService.getDocument(productId);
+    return this.factoryService.getDocument(productId, 'device');
   }
 
   updateProduct(productId: string, product: IProduct) {

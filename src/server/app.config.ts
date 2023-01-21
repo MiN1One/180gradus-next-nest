@@ -7,4 +7,5 @@ export default registerAs('appConfig', () => ({
   staticFilesPathPrefix: process.env.STATIC_FILES_PATH_PREFIX,
   isBuild: (process.env.NODE_ENV as any) === 'build',
   dbConnection: process.env.DB_CONNECTION,
+  filesSaveDir: process.env.FILES_SAVE_DIR,
 }));

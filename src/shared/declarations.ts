@@ -1,9 +1,15 @@
 import { FastifyRequest } from "fastify";
 
+interface IFastifyRequest<T extends Object> extends FastifyRequest {
+  params: FastifyRequest['params'] & T;
+}
+
 declare global {
-  interface FastifyRequestWithParams extends FastifyRequest {
-    params: FastifyRequest['params'] & {
-      locale?: string;
-    }
-  }
+  interface FastifyRequestWithLocale extends IFastifyRequest<{
+    locale?: string;
+  }> {}
+
+  interface FastifyRequestWithFile extends IFastifyRequest<{
+    fileType?: string;
+  }> {}
 }

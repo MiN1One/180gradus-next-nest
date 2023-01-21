@@ -1,5 +1,5 @@
 import { Inject, Injectable, Logger, NotFoundException } from "@nestjs/common";
-import { HydratedDocument, Model } from "mongoose";
+import mongoose, { HydratedDocument, Model } from "mongoose";
 import { ApiFeatures } from "../utils/api.utils";
 import { FactoryModuleOptions, FACTORY_MODULE_TOKEN } from "./factory.module-definition";
 
@@ -16,15 +16,20 @@ export class FactoryService {
     this.modelName = this.model.collection.name;
   }
 
-  async getAllDocuments(query: Record<string, string>) {
+  async getAllDocuments(query: Record<string, string>, ...populate: string[]) {
     try {
-      const { mongooseQuery } = new ApiFeatures(this.model.find(), query)
+      let { mongooseQuery } = new ApiFeatures(this.model.find(), query)
         .limit()
         .project()
         .paginate()
         .filter()
         .search()
-        .sort();
+        .sort()
+        .populate();
+
+      if (populate.length) {
+        mongooseQuery = mongooseQuery.populate(populate);
+      }
 
       const documents = await mongooseQuery;
       return documents;
@@ -34,9 +39,13 @@ export class FactoryService {
     }
   }
 
-  async getDocument(documentId: string) {
+  async getDocument(documentId: string, ...populate: string[]) {
     try {
-      const document = await this.model.findById(documentId);
+      let query = this.model.findById(documentId);
+      if (populate.length) {
+        query = await query.populate(populate);
+      }
+      const document = await query;
       if (!document) {
         throw new NotFoundException('Document with this id is not found');
       }

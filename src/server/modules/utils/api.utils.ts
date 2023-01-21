@@ -1,14 +1,28 @@
-import { Logger } from "@nestjs/common";
-import { model, Model, Query } from "mongoose";
+import { Query } from "mongoose";
 
 const DEFAULT_LIMIT_COUNT = 10;
-const featureQueryKeys = ['project', 'page', 'limit', 'search', 'sort'];
+const featureQueryKeys = [
+  'project',
+  'page',
+  'limit',
+  'search',
+  'sort',
+  'populate'
+];
 
 export class ApiFeatures<DocumentType> {
   constructor(
     public mongooseQuery: Query<DocumentType[], DocumentType>,
     public requestQuery: Record<string, string>
   ) {}
+
+  populate() {
+    if (this.requestQuery.populate) {
+      const fields = this.requestQuery.populate.split(',');
+      this.mongooseQuery = this.mongooseQuery.populate(fields);
+    }
+    return this;
+  }
 
   filter() {
     const queriesCopy = Object.assign({}, this.requestQuery);
