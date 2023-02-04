@@ -1,4 +1,5 @@
 import { registerAs } from '@nestjs/config';
+import { getExirationDate } from '@shared/utils/date.utils';
 
 export default registerAs('appConfig', () => ({
   port: process.env.PORT ?? 5000,
@@ -8,5 +9,11 @@ export default registerAs('appConfig', () => ({
   isBuild: (process.env.NODE_ENV as any) === 'build',
   dbConnection: process.env.DB_CONNECTION,
   filesSaveDir: process.env.FILES_SAVE_DIR,
-  imagesSaveSubpath: process.env.IMAGES_SAVE_SUBPATH
+  cookieSecret: process.env.COOKIE_SECRET,
+  cookieExpiresIn: getExirationDate({
+    minutes: parseInt(process.env.COOKIE_EXPIRES_IN) ?? 10
+  }),
+  imagesSaveSubpath: process.env.IMAGES_SAVE_SUBPATH,
+  jwtSecret: process.env.JWT_SECRET,
+  jwtExpiresIn: process.env.JWT_EXPIRES_IN,
 }));

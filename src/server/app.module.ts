@@ -10,6 +10,8 @@ import { OrderModule } from './modules/order/order.module';
 import { UserModule } from './modules/user/user.module';
 import { ProductModule } from './modules/product/product.module';
 import { UploadModule } from './modules/upload/upload.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { ShopModule } from './modules/shop/shop.module';
 
 declare const module: any;
 
@@ -41,11 +43,13 @@ export class AppModule {
         }),
         mongooseModule,
         ViewModule,
+        AuthModule,
         UserModule,
         ProductModule,
         OrderModule,
         DeviceModule,
         UploadModule,
+        ShopModule,
       ],
       controllers: [AppController],
       providers: [AppService],

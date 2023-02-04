@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { FactoryModule } from '../factory/factory.module';
+import { UserModule } from '../user/user.module';
 import { DeviceController } from './device.controller';
 import { Device, DeviceSchema } from './device.schema';
 import { DeviceService } from './device.service';
@@ -19,7 +20,8 @@ import { DeviceService } from './device.service';
         }]),
       ],
       inject: [getModelToken(Device.name)]
-    })
+    }),
+    UserModule,
   ]
 })
 export class DeviceModule {}

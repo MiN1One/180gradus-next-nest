@@ -1,4 +1,5 @@
-import { IImage, MongoDocument } from "./common.types";
+import { MongoDocument } from "./common.types";
+import { IImage } from "@shared/types/shop.types";
 import { IDevice } from "./device.types";
 
 export enum EProductType {
@@ -14,8 +15,11 @@ export interface IProduct extends MongoDocument {
   productType: ProductType;
   images: IImage[];
   sales: string[];
+  title: string;
+  handle: string;
   totalSales: number;
   price: number;
   compareAtPrice: number;
+  description: string;
   isActive: boolean;
 }

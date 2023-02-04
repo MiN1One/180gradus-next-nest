@@ -7,7 +7,6 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 module.exports = {
   i18n: locales,
   saveMissing: isDevelopment,
-  debug: isDevelopment,
   defaultNS: 'common',
   localePath: isDevelopment 
     ? 'public/locales' 

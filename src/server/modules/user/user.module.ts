@@ -9,6 +9,7 @@ import { UserService } from './user.service';
 @Module({
   controllers: [UserController],
   providers: [UserService],
+  exports: [UserService],
   imports: [
     FactoryModule.forFeatureAsync({
       useFactory: (model: Model<any>) => ({ model }),

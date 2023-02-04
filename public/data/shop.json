@@ -1,0 +1,20 @@
+{
+  "headerData": {
+    "links": [],
+    "showCart": true,
+    "showFavorites": true
+  },
+  "footerData": {
+    "links": [],
+    "socialLinks": [],
+    "showBreadcrumbs": true,
+    "copyrightText": "1234 {{year}} {{company}}"
+  },
+  "generalData": {
+    "company": "180Gradus",
+    "description": "1234",
+    "phoneNumber": "tel:+0000000000",
+    "email": "hello@180gradus.com",
+    "logo": ""
+  }
+}

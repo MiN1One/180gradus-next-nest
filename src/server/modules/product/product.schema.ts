@@ -1,8 +1,9 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { IImage } from "@shared/types/common.types";
+import { IImage } from "@shared/types/shop.types";
 import { IDevice } from "@shared/types/device.types";
 import { EProductType, IProduct, ProductType } from "@shared/types/product.types";
 import { HydratedDocument, SchemaTypes } from "mongoose";
+import slugify from 'slugify';
 
 @Schema()
 class Image implements IImage {
@@ -25,6 +26,12 @@ export class Product implements IProduct {
   })
   device: string | IDevice;
 
+  @Prop({ type: String })
+  description: string;
+
+  @Prop({ type: String, required: true })
+  title: string;
+
   @Prop({
     type: String,
     enum: Object.keys(EProductType),
@@ -34,6 +41,9 @@ export class Product implements IProduct {
 
   @Prop([Image])
   images: IImage[];
+
+  @Prop({ type: String })
+  handle: string;
 
   @Prop({
     type: [{
@@ -58,3 +68,8 @@ export class Product implements IProduct {
 
 export type ProductDocument = HydratedDocument<Product>;
 export const ProductSchema = SchemaFactory.createForClass(Product);
+
+ProductSchema.pre('save', function(next) {
+  this.handle = this.title.handleize();
+  next();
+});

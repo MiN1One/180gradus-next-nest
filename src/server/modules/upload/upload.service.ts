@@ -5,7 +5,8 @@ import {
 } from "@nestjs/common";
 import { ConfigType } from "@nestjs/config";
 import AppConfig from "@server/app.config";
-import { IFile, IImage, IMAGE_QUALITIES } from "@shared/types/common.types";
+import { IFile, IMAGE_QUALITIES } from "@shared/types/common.types";
+import { IImage } from "@shared/types/shop.types";
 import * as sharp from 'sharp';
 import { join } from 'path';
 import { createDir, removeDir } from "@server/utils/fs.utils";
@@ -28,14 +29,13 @@ export class UploadService {
     try {
       const imageLocations: IImage[] = [];
       const [_, extension] = image.name.split('.');
-      console.log(extension);
       const originalName = image.name.replace('.' + extension, '');
 
       const sharpInstance = sharp(image.data);
       const metadata = await sharpInstance.metadata();
 
       imageLocations.push({
-        src: path + `${originalName}.jpeg`,
+        src: path + `${originalName}.jpg`,
         width: metadata.width,
         height: metadata.height,
       });
@@ -63,6 +63,9 @@ export class UploadService {
 
   async uploadImages(files: IFile[], subpath?: string) {
     try {
+      if (!files.length) {
+        return [];
+      }
       let path = this.appConfig.imagesSaveSubpath + '/';
       if (subpath) {
         path += `${subpath}/`;

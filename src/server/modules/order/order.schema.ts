@@ -20,11 +20,15 @@ export class Order implements IOrder {
   @Prop({ type: Number, required: true })
   subtotalPrice: number;
 
-  @Prop({ type: SchemaTypes.ObjectId, ref: 'User' })
+  @Prop({
+    type: SchemaTypes.ObjectId,
+    ref: 'User',
+    required: true
+  })
   user: string;
 
   @Prop([LineItem])
-  lineItems: string[] | ILineItem[];
+  lineItems: ILineItem[];
 }
 
 export type OrderDocument = HydratedDocument<Order>;

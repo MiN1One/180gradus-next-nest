@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { getModelToken, MongooseModule } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { FactoryModule } from "../factory/factory.module";
+import { UserModule } from "../user/user.module";
 import { ProductController } from "./product.controller";
 import { Product, ProductSchema } from "./product.schema";
 import { ProductService } from "./product.service";
@@ -9,6 +10,7 @@ import { ProductService } from "./product.service";
 @Module({
   controllers: [ProductController],
   providers: [ProductService],
+  exports: [ProductService],
   imports: [
     FactoryModule.forFeatureAsync({
       useFactory: (model: Model<any>) => ({ model }),
@@ -20,6 +22,7 @@ import { ProductService } from "./product.service";
         }])
       ]
     }),
+    UserModule,
   ]
 })
 export class ProductModule {}

@@ -1,18 +1,14 @@
-import { GetStaticProps, NextPage } from 'next';
+import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useTranslation } from 'next-i18next';
 
 interface HomePageProps {
   data: string;
 }
 
-const IndexPage: NextPage = ({ data }: HomePageProps) => {
-  const { t } = useTranslation();
+function IndexPage({ data }: HomePageProps) {
   return (
     <main>
-      <h1>{data}</h1>
-      {t('test')}
-      {t('missing')}
+      
     </main>
   );
 };

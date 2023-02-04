@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { FactoryModule } from '../factory/factory.module';
+import { ProductModule } from '../product/product.module';
+import { UserModule } from '../user/user.module';
 import { OrderController } from './order.controller';
 import { Order, OrderSchema } from './order.schema';
 import { OrderService } from './order.service';
@@ -20,6 +22,8 @@ import { OrderService } from './order.service';
         }])
       ]
     }),
+    UserModule,
+    ProductModule,
   ]
 })
 export class OrderModule {}

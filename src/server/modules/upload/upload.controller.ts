@@ -1,4 +1,4 @@
-import { Controller, Post, Query, Req, UploadedFile } from "@nestjs/common";
+import { Controller, Post, Query } from "@nestjs/common";
 import { Files } from "@server/decorators/files.decorator";
 import { IFile } from "@shared/types/common.types";
 import { UploadService } from "./upload.service";

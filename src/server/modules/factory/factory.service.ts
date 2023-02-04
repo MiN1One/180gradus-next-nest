@@ -1,6 +1,6 @@
 import { Inject, Injectable, Logger, NotFoundException } from "@nestjs/common";
-import mongoose, { HydratedDocument, Model } from "mongoose";
-import { ApiFeatures } from "../utils/api.utils";
+import { HydratedDocument, Model, Types } from "mongoose";
+import { ApiFeatures } from "../../utils/api.utils";
 import { FactoryModuleOptions, FACTORY_MODULE_TOKEN } from "./factory.module-definition";
 
 @Injectable()
@@ -16,7 +16,18 @@ export class FactoryService {
     this.modelName = this.model.collection.name;
   }
 
-  async getAllDocuments(query: Record<string, string>, ...populate: string[]) {
+  async getDocumentsByIds<T = Array<any>>(...ids: string[]) {
+    try {
+      const objectIds = ids.map(id => new Types.ObjectId(id));
+      const documents = await this.model.find({ _id: { $in: objectIds } });
+      return documents as T;
+    } catch (er) {
+      Logger.error(er, `FactoryService:getDocumentsByIds:${this.modelName}`);
+      return [] as T;
+    }
+  }
+
+  async getAllDocuments(query: Record<string, any>, ...populate: string[]) {
     try {
       let { mongooseQuery } = new ApiFeatures(this.model.find(), query)
         .limit()
@@ -39,7 +50,7 @@ export class FactoryService {
     }
   }
 
-  async getDocument(documentId: string, ...populate: string[]) {
+  async getDocument<T = any>(documentId: string, ...populate: string[]) {
     try {
       let query = this.model.findById(documentId);
       if (populate.length) {
@@ -49,10 +60,10 @@ export class FactoryService {
       if (!document) {
         throw new NotFoundException('Document with this id is not found');
       }
-      return document;
+      return document as T;
     } catch (er) {
       Logger.error(er, `FactoryService:getDocument:${this.modelName}`);
-      return {};
+      return {} as T;
     }
   }
 
@@ -82,14 +93,14 @@ export class FactoryService {
     return null;
   }
 
-  async createDocument(document: Object) {
+  async createDocument<T = Object>(document: T) {
     try {
       const createdDocument = await this.model.create(document);
       await createdDocument.save();
-      return createdDocument;
+      return createdDocument as T;
     } catch (er) {
       Logger.error(er, `FactoryService:createDocument:${this.modelName}`);
-      return {};
+      return {} as T;
     }
   }
 }

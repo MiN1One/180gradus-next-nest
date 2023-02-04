@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@server/guards/auth.guard';
 import { IDevice } from '@shared/types/device.types';
 import { DeviceService } from './device.service';
 
@@ -9,6 +10,7 @@ export class DeviceController {
   ) {}
 
   @Post()
+  @UseGuards(AuthGuard('ADMIN', 'MAINTAINER'))
   createNewDevice(@Body('device') device: IDevice) {
     return this.deviceService.createNewDevice(device);
   }
@@ -19,6 +21,7 @@ export class DeviceController {
   }
 
   @Patch('/:id')
+  @UseGuards(AuthGuard('ADMIN', 'MAINTAINER'))
   udpateDevice(
     @Param('id') id: string, 
     @Body('device') device: Partial<IDevice>
@@ -27,6 +30,7 @@ export class DeviceController {
   }
 
   @Delete('/:id')
+  @UseGuards(AuthGuard('ADMIN'))
   deleteDevice(@Param('id') id: string) {
     return this.deviceService.deleteDevice(id);
   }

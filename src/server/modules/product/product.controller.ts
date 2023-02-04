@@ -1,4 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@server/guards/auth.guard";
+import { TranslationsRecord } from "@shared/types/locale.types";
 import { IProduct } from "@shared/types/product.types";
 import { ProductService } from "./product.service";
 
@@ -14,6 +16,7 @@ export class ProductController {
   }
 
   @Patch('/:id')
+  @UseGuards(AuthGuard('ADMIN'))
   updateProduct(
     @Param('id') id: string, 
     @Body('product') product: IProduct
@@ -21,12 +24,26 @@ export class ProductController {
     return this.productService.updateProduct(id, product);
   }
 
-  @Post() 
-  createProduct(@Body('product') product: IProduct) {
-    return this.productService.createProduct(product);
+  @Patch('/translations/:productHandle')
+  @UseGuards(AuthGuard('MAINTAINER', 'ADMIN'))
+  updateTranslations(
+    @Param('productHandle') productHandle: string,
+    @Body('translations') translations: TranslationsRecord,
+  ) {
+    return this.productService.saveTranslations(productHandle, translations);
+  }
+
+  @Post()
+  @UseGuards(AuthGuard('ADMIN'))
+  createProduct(
+    @Body('product') product: IProduct,
+    @Body('translations') translations: TranslationsRecord
+  ) {
+    return this.productService.createProduct(product, translations);
   }
 
   @Delete('/:id')
+  @UseGuards(AuthGuard('ADMIN'))
   deleteProduct(@Param('id') id: string) {
     return this.productService.deleteProduct(id);
   }

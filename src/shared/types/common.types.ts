@@ -1,11 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 
-export interface IImage {
-  src: string;
-  width?: number;
-  height?: number;
-}
-
 export interface MongoDocument {
   createdAt?: string;
   updatedAt?: string;

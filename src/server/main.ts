@@ -13,6 +13,8 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 import '@shared/declarations';
 import fileUpload from 'fastify-file-upload';
+import fastifyCookie from '@fastify/cookie';
+import '@shared/utils/prototype.utils';
 
 declare const module: any;
 
@@ -30,8 +32,20 @@ async function bootstrap() {
     staticFilesDir,
     staticFilesPathPrefix,
     isBuild,
+    cookieSecret,
+    cookieExpiresIn,
   } = app.get<ConfigType<typeof appConfig>>(appConfig.KEY);
 
+  await app.register(fastifyCookie, {
+    secret: cookieSecret,
+    parseOptions: {
+      secure: !isDevelopment && !isBuild,
+      httpOnly: !isDevelopment,
+      expires: cookieExpiresIn,
+      sameSite: !isDevelopment && !isBuild
+    }
+  });
+  
   await app.register(fileUpload);
 
   app.useStaticAssets({

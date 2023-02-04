@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { IImage } from "@shared/types/common.types";
+import { IImage } from "@shared/types/shop.types";
 import { DeviceType, EDeviceType, IDevice } from "@shared/types/device.types";
 import { IProduct } from "@shared/types/product.types";
 import { HydratedDocument, SchemaTypes } from "mongoose";

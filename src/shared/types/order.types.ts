@@ -10,5 +10,5 @@ export interface IOrder extends MongoDocument {
   totalPrice: number;
   subtotalPrice: number;
   user: string;
-  lineItems: string[] | ILineItem[];
+  lineItems: ILineItem[];
 }
