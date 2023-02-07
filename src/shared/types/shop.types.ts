@@ -14,6 +14,7 @@ export interface IHeaderData {
   links: ILinkItem[];
   showCart: boolean;
   showFavorites: boolean;
+  logo: string;
 }
 
 export interface IFooterData {
@@ -24,16 +25,44 @@ export interface IFooterData {
   showBreadcrumbs: boolean;
 }
 
+export enum EItemRoles {
+  PRIMARY = 'Primary',
+  SECONDARY = 'Secondary'
+}
+
+export interface ILogo {
+  role: keyof typeof EItemRoles;
+  src: string;
+}
+
 export interface IGeneralData {
   company: string;
   logo?: string;
+  logos: ILogo[];
   description: string;
   email: string;
   phoneNumber: string;
 }
 
+export interface IInterfaceSettings {
+  colorPrimary: string;
+  colorSecondary: string;
+  colorTertiary: string;
+  bgColorPrimary: string;
+  bgColorSecondary: string;
+  textColorPrimary: string;
+  textColorSecondary: string;
+  textColorSub?: string;
+  colorGreyLight: string;
+  colorGrey: string;
+  colorGreyDark: string;
+  colorDark: string;
+  containerWidth: string;
+}
+
 export interface IHeadData {
   generalData: IGeneralData;
-  headerData: IHeadData;
+  headerData: IHeaderData;
   footerData: IFooterData;
+  interfaceSettings: IInterfaceSettings;
 }

@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { NextServer, RequestHandler } from 'next/dist/server/next';
 import { FastifyReply, FastifyRequest } from "fastify";
 import { parse, UrlWithParsedQuery } from 'url';
-import * as locales from '../../../../locales';
+import * as localesConfig from '../../../../locales';
 import { NextParsedUrlQuery } from 'next/dist/server/request-meta';
 
 interface IParsedQueryWithNextQuery extends UrlWithParsedQuery {
@@ -28,17 +28,23 @@ export class ViewService {
 
   getNextQuery(req: FastifyRequestWithLocale) {
     const { params: { locale }, url } = req;
+    const { locales, defaultLocale } = localesConfig;
     const parsedUrl: IParsedQueryWithNextQuery = parse(url, true);
+
     let pathname = parsedUrl.path.toLowerCase();
-    if (locale) {
+    let parsedLocale: string;
+    if (locale && locales.includes(locale.toLowerCase())) {
+      parsedLocale = locale;
       pathname = pathname.replace(locale.toLowerCase(), '');
     }
-    parsedUrl.pathname = pathname;
+
     parsedUrl.query = {
       ...parsedUrl.query,
-      __nextLocale: locale || locales.defaultLocale,
-      __nextDefaultLocale: locales.defaultLocale,
+      __nextLocale: parsedLocale || defaultLocale,
+      __nextDefaultLocale: defaultLocale,
     };
+    parsedUrl.pathname = pathname;
+    
     return parsedUrl;
   }
 

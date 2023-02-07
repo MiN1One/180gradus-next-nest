@@ -1,30 +1,33 @@
+import Layout from '@client/components/Common/Layout';
+import Hero from '@client/components/Hero/Hero';
+import { ScrollContainer } from '@client/components/ScrollContainer/ScrollContainer';
+import { fetchHeadData } from '@client/utils/fetch.utils';
 import { GetStaticProps } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 interface HomePageProps {
-  data: string;
 }
 
-function IndexPage({ data }: HomePageProps) {
+function IndexPage(props: HomePageProps) {
   return (
-    <main>
-      
-    </main>
+    <Layout>
+      <main>
+        <ScrollContainer 
+          sections={[
+            <Hero />,
+            <Hero />,
+            <Hero />,
+          ]}
+        />
+      </main>
+    </Layout>
   );
 };
 
 export const getStaticProps: GetStaticProps<HomePageProps> = 
   async ({ locale, defaultLocale }) => {
-    const response = await fetch(process.env.SERVER_HOST + '/test');
-    const data = await response.text();
-    const translations = await serverSideTranslations(
-      locale || defaultLocale, 
-    );
-
     return {
       props: {
-        data,
-        ...translations
+        ...(await fetchHeadData(locale || defaultLocale))
       },
       revalidate: 100,
     };

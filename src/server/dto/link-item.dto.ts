@@ -1,9 +1,11 @@
 import { ILinkItem } from "@shared/types/shop.types";
-import { IsOptional, IsString } from "class-validator";
+import { Transform } from "class-transformer";
+import { IsString, ValidateIf } from "class-validator";
 
 export class LinkItemDto implements ILinkItem {
   @IsString()
-  @IsOptional()
+  @ValidateIf(({ label }) => Boolean(label))
+  @Transform(({ obj }) => obj.label.handleize())  
   value?: string;
 
   @IsString()

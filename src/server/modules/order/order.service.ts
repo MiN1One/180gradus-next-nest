@@ -30,7 +30,6 @@ export class OrderService {
     });
     const products = await this.productService.getProductsByIds(...productIds);
     let totalPrice = 0;
-    console.log({ products })
     for (const product of products) {
       lineItemsMap[product._id] = {
         ...lineItemsMap[product._id],

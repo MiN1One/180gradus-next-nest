@@ -1,0 +1,44 @@
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  background: var(--bgColorPrimary);
+  color: var(--textColorPrimary);
+  font-family: 'Poppins', sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul { list-style: none; }
+
+input,
+button {
+  border: none;
+  background: transparent;
+  font-family: inherit;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+button { cursor: pointer; }
+
+svg {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  color: var(--textColorPrimary);
+}

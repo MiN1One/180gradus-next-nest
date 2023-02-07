@@ -21,7 +21,7 @@ export class ShopService {
       Logger.error(er, 'ShopService:getHeadData');
       return {};
     }
-  }  
+  }
 
   async saveHeadData(data: HeadDataDto) {
     try {

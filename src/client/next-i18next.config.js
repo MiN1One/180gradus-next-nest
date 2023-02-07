@@ -7,8 +7,13 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 module.exports = {
   i18n: locales,
   saveMissing: isDevelopment,
-  defaultNS: 'common',
+  reloadOnPrerender: isDevelopment,
+  fallbackLng: false,
+  saveMissingTo: 'all',
+  updateMissing: true,
+  returnEmptyString: false,
   localePath: isDevelopment 
     ? 'public/locales' 
     : join(__dirname, '../../public/locales'),
+  load: 'currentOnly',
 }

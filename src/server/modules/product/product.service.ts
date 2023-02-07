@@ -45,8 +45,7 @@ export class ProductService {
         let translation = translations[locale];
         const filePath = join(process.cwd(), `/products/${locale}/`);
         const fileLocation = `${filePath}/${fileName}`;
-        const dirExists = createDir(fileLocation);
-        console.log({ dirExists });
+        // const dirExists = createDir(fileLocation);
         return writeFile(fileLocation, JSON.stringify(translation));
       });
       await Promise.all(promises);

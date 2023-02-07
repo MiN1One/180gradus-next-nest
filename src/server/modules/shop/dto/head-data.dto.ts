@@ -1,7 +1,24 @@
 import { LinkItemDto } from "@server/dto/link-item.dto";
-import { IFooterData, IGeneralData, IHeadData, IHeaderData, ILinkItem } from "@shared/types/shop.types";
+import {
+  EItemRoles,
+  IInterfaceSettings,
+  IFooterData,
+  IGeneralData,
+  IHeadData,
+  IHeaderData,
+  ILinkItem,
+  ILogo
+} from "@shared/types/shop.types";
 import { Type } from "class-transformer";
-import { IsArray, IsBoolean, IsObject, IsOptional, IsString, ValidateNested } from "class-validator";
+import {
+  IsArray,
+  IsBoolean,
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested
+} from "class-validator";
+import { ColorsDto } from "./colots.dto";
 
 class HeaderDataDto implements IHeaderData {
   @IsArray()
@@ -14,6 +31,9 @@ class HeaderDataDto implements IHeaderData {
 
   @IsBoolean()
   showFavorites: boolean;
+
+  @IsString()
+  logo: string;
 }
 
 class FooterDataDto implements IFooterData {
@@ -38,6 +58,14 @@ class FooterDataDto implements IFooterData {
   additionalText?: string;
 }
 
+class LogosDto implements ILogo {
+  @IsString()
+  src: string;
+
+  @IsString()
+  role: keyof typeof EItemRoles;
+}
+
 class GeneralDataDto implements IGeneralData {
   @IsString()
   company: string;
@@ -53,13 +81,19 @@ class GeneralDataDto implements IGeneralData {
 
   @IsString()
   logo?: string;
+
+  @IsArray()
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => LogosDto)
+  logos: ILogo[];
 }
 
 export class HeadDataDto implements IHeadData {
   @ValidateNested()
   @IsObject()
   @Type(() => HeaderDataDto)
-  headerData: IHeadData;
+  headerData: IHeaderData;
 
   @ValidateNested()
   @IsObject()
@@ -70,4 +104,9 @@ export class HeadDataDto implements IHeadData {
   @IsObject()
   @Type(() => GeneralDataDto)
   generalData: IGeneralData;
+
+  @ValidateNested()
+  @IsObject()
+  @Type(() => ColorsDto)
+  interfaceSettings: IInterfaceSettings;
 }
