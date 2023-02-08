@@ -7,11 +7,12 @@ import React, {
 } from "react";
 import { IHeadData } from '@shared/types/shop.types';
 import CssVariables from "@client/components/Common/CssVariables";
+import { IVariables } from "@client/interfaces/variables.interface";
 
 interface IGlobalContext {
   media: Record<string, boolean>;
-  setCssVariables: StateSetter<Record<string, any>>;
-  cssVariables: Record<string, any>;
+  setCssVariables: StateSetter<IVariables>;
+  cssVariables: IVariables;
   loading: boolean;
   setLoading: StateSetter<boolean>;
   setHeadData: StateSetter<IHeadData>;
@@ -31,9 +32,9 @@ export const GlobalContextProvider: FC<IGlobalContextProviderProps> =
     const [headData, setHeadData] = useState<IHeadData>(
       headDataProp || {} as IHeadData
     );
-    const [cssVariables, setCssVariables] = useState<
-      Record<string, any>
-    >({});
+    const [cssVariables, setCssVariables] = useState<IVariables>({
+      headerHeight: 0,
+    });
     const media = useMedia(
       ['small', 'screen and (max-width: 31.25em)'],
       ['mobile', 'only screen and (max-width: 48em)'],
