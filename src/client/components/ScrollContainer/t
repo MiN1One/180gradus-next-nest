@@ -38,42 +38,17 @@ export function ScrollContainer(props: ScrollContainerProps) {
     };
   }, []);
 
-  const onTouchMove = useCallback(() => {
-    
-  }, []);
-
   const onMouseWheel = useCallback(
     (e: any) => {
       let scrollMargin = e.deltaY ?? e.wheelDeltaY;
-
       if (scrollMargin > 0) {
-        scrollMargin = Math.min(scrollMargin, 10);
+        scrollMargin = Math.min(scrollMargin, 10)
       } else {
         scrollMargin = Math.max(scrollMargin, -10);
       }
 
-      const scrollingBack = scrollMargin <= 0;
-
       const currentSectionHeight = sectionHeights[activeSectionIndex];
       const viewHeight = window.innerHeight - cssVariables.headerHeight;
-
-      const sectionReachedMax = currentSectionHeight == viewHeight;
-      const sectionReachedMin = currentSectionHeight == 0;
-
-      if (
-        (
-          scrollingBack && 
-          activeSectionIndex === 0 && 
-          sectionReachedMin
-        ) ||
-        (
-          !scrollingBack && 
-          activeSectionIndex === sectionHeights.length - 1 && 
-          sectionReachedMax
-        )
-      ) {
-        return;
-      }
 
       const newSectionHeight = Math.max(
         Math.min(currentSectionHeight + scrollMargin, viewHeight), 0
@@ -82,25 +57,30 @@ export function ScrollContainer(props: ScrollContainerProps) {
       const isNotLastSection = sectionHeights.length > activeSectionIndex + 1;
       const isNotFirstSection = activeSectionIndex > 0;
 
+      const sectionReachedMax = currentSectionHeight == viewHeight;
+      const sectionReachedMin = currentSectionHeight == 0;
+
       const activeSectionTranslateMax = (activeSectionIndex + 1) * viewHeight;
       const canTranslate = translate < activeSectionTranslateMax;
-      const newTranlateValue = translate + scrollMargin;
 
+      const scrollingBack = scrollMargin <= 0;
 
-      const shouldTranslate = (
-        (scrollingBack || sectionReachedMax) &&
-        isNotLastSection && 
-        sectionReachedMax
-      );
+      console.log({ sectionReachedMin, currentSectionHeight, activeSectionIndex, translate, activeSectionTranslateMax });
+
+      // const shouldTranslate = (
+      //   (scrollingBack && sectionReachedMin) || 
+      //   (!scrollingBack && sectionReachedMax)
+      // );
+      const shouldTranslate = (scrollingBack || sectionReachedMax);
 
       if (
         !sectionReachedMax || 
-        (scrollingBack && newTranlateValue <= activeSectionIndex * viewHeight)
+        (scrollingBack && translate === activeSectionIndex * viewHeight)
       ) {
         changeSectionHeight(activeSectionIndex, newSectionHeight);
       }
         
-      if (shouldTranslate) {
+      if (shouldTranslate && isNotLastSection && sectionReachedMax) {
         setTranslate(p => Math.max(
           Math.min(p + scrollMargin, activeSectionTranslateMax), 0
         ));
