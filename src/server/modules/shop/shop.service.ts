@@ -1,5 +1,5 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { createDir } from "@server/utils/fs.utils";
+import { createDir, readJsonFile } from "@server/utils/fs.utils";
 import { readFile, writeFile } from "fs/promises";
 import { join } from "path";
 import { HeadDataDto } from "./dto/head-data.dto";
@@ -15,10 +15,18 @@ export class ShopService {
 
   async getHeadData() {
     try {
-      const buffer = await readFile(`${this.savePath}/shop.json`, 'utf-8');
-      return JSON.parse(buffer?.toString());
+      return readJsonFile(this.savePath + '/shop.json');
     } catch (er) {
       Logger.error(er, 'ShopService:getHeadData');
+      return {};
+    }
+  }
+
+  async getHomeData() {
+    try {
+      return readJsonFile(this.savePath + '/index.json');
+    } catch (er) {
+      Logger.error(er, 'ShopService:getHomeData');
       return {};
     }
   }

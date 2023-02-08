@@ -19,4 +19,9 @@ export class ShopController {
     await this.shopService.saveHeadData(headData);
     return headData;
   }
+
+  @Get('index') 
+  getHomePageData() {
+    return this.shopService.getHomeData();
+  }
 }

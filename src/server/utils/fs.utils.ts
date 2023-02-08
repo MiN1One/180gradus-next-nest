@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import { readFile } from "fs/promises";
 import * as rimraf from "rimraf";
 
 export const createDir = (dir: string) => {
@@ -23,3 +24,7 @@ export const removeDir = (dir: string) => {
     });
   });
 };
+
+export const readJsonFile = async (filePath: string) => (
+  JSON.parse((await readFile(filePath, 'utf-8')) || '{}')
+);

@@ -5,10 +5,8 @@ export const HeroBackground = memo(function() {
 
   return (
     <section className={classes.heroBg}>
-      <div className="container">
-        <div className={classes.content}>
-          Hello!
-        </div>
+      <div className={classes.content}>
+        Hello!
       </div>
     </section>
   );
