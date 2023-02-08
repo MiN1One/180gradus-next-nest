@@ -5,6 +5,11 @@
   width: 100%;
   z-index: 999;
   background: var(--bgColorSecondary);
+  transition: transform .25s ease-out;
+
+  &.hidden {
+    transform: translateY((-var(--headerHeight)));
+  }
 
   .content {
     width: 100%;

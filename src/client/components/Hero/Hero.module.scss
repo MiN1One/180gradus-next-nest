@@ -1,5 +1,13 @@
-.hero {
-  background: var(--bgColorSecondary);
-  width: 100%;
+.heroTop,
+.heroBg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80%;
   height: 100vh;
+}
+
+.heroTop {
+  background: var(--bgColorSecondary);
+
 }

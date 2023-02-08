@@ -1,6 +1,6 @@
 import Layout from '@client/components/Common/Layout';
-import Hero from '@client/components/Hero/Hero';
-import { ScrollContainer } from '@client/components/ScrollContainer/ScrollContainer';
+import HomeContent from '@client/components/HomeContent/HomeContent';
+import { HomeContextProvider } from '@client/contexts/HomeContext';
 import { fetchHeadData } from '@client/utils/fetch.utils';
 import { GetStaticProps } from 'next';
 
@@ -9,17 +9,11 @@ interface HomePageProps {
 
 function IndexPage(props: HomePageProps) {
   return (
-    <Layout>
-      <main>
-        <ScrollContainer 
-          sections={[
-            <Hero />,
-            <Hero />,
-            <Hero />,
-          ]}
-        />
-      </main>
-    </Layout>
+    <HomeContextProvider>
+      <Layout>
+        <HomeContent />
+      </Layout>
+    </HomeContextProvider>
   );
 };
 

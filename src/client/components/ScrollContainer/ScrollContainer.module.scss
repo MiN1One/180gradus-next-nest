@@ -1,11 +1,12 @@
 .container {
+  --sectionHeight: 100vh;
   width: 100%;
   position: fixed;
   z-index: 99;
   bottom: 0;
   overflow: hidden;
   left: 0; 
-  height: calc(100vh - var(--headerHeight));
+  height: var(--sectionHeight);
 
   .content {
     width: 100%;
@@ -16,7 +17,7 @@
 
   .section {
     width: 100%;
-    height: calc(100vh - var(--headerHeight));
+    height: var(--sectionHeight);
     overflow: hidden;
     position: relative;
   }
@@ -27,5 +28,6 @@
     left: 0;
     width: 100%;
     z-index: 1; 
+    transition: opacity .3s ease;
   }
 }

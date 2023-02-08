@@ -4,11 +4,25 @@ import { useGlobalContext } from "@client/contexts/GlobalContext";
 import { getLimintNumber } from "@client/utils/number.utils";
 
 interface ScrollContainerProps {
-  sections: React.ReactNode[];
+  sections: [React.ReactNode, React.ReactNode][];
+  onReachEnd?: () => void;
+  onReachStart?: () => void;
+  onChange?: (
+    currentSectionHeight: number, 
+    translate: number,
+    activeSectionIndex: number
+  ) => void;
+  opaque?: boolean;
 }
 
 export function ScrollContainer(props: ScrollContainerProps) {
-  const { sections } = props;
+  const {
+    sections,
+    onReachEnd,
+    opaque,
+    onReachStart,
+    onChange,
+  } = props;
   const { cssVariables } = useGlobalContext();
   const [translate, setTranslate] = useState(0);
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
@@ -47,41 +61,39 @@ export function ScrollContainer(props: ScrollContainerProps) {
         const scrollingBack = scrollMargin <= 0;
     
         const currentSectionHeight = sectionHeights[activeSectionIndex];
-        const viewHeight = window.innerHeight - cssVariables.headerHeight;
+        const viewHeight = window.innerHeight;
+
+        const isLastSection = activeSectionIndex == sectionHeights.length - 1;
+        const isFirstSection = activeSectionIndex == 0;
 
         const sectionReachedMax = currentSectionHeight == viewHeight;
         const sectionReachedMin = currentSectionHeight == 0;
-    
+
         if (
-          (
-            scrollingBack && 
-            activeSectionIndex === 0 && 
-            sectionReachedMin
-          ) ||
-          (
-            !scrollingBack && 
-            activeSectionIndex === sectionHeights.length - 1 && 
-            sectionReachedMax
-          )
+          isLastSection && 
+          sectionReachedMax && 
+          typeof onReachEnd === 'function'
         ) {
-          return;
+          onReachEnd();
+        } else if (
+          isFirstSection && 
+          sectionReachedMin && 
+          typeof onReachStart === 'function'
+        ) {
+          onReachStart();
         }
     
         const newSectionHeight = Math.max(
           Math.min(currentSectionHeight + scrollMargin, viewHeight), 0
         );
     
-        const isNotLastSection = sectionHeights.length > activeSectionIndex + 1;
-        const isNotFirstSection = activeSectionIndex > 0;
-    
         const activeSectionTranslateMax = (activeSectionIndex + 1) * viewHeight;
         const canTranslate = translate < activeSectionTranslateMax;
         const newTranlateValue = translate + scrollMargin;
     
-    
         const shouldTranslate = (
           (scrollingBack || sectionReachedMax) &&
-          isNotLastSection && 
+          !isLastSection && 
           sectionReachedMax
         );
     
@@ -97,35 +109,41 @@ export function ScrollContainer(props: ScrollContainerProps) {
             Math.min(p + scrollMargin, activeSectionTranslateMax), 0
           ));
         }
+
+        if (typeof onChange === 'function') {
+          onChange(newSectionHeight, newTranlateValue, activeSectionIndex);
+        }
     
         setActiveSectionIndex(p => {
-          if (isNotLastSection && sectionReachedMax && !canTranslate) {
+          if (!isLastSection && sectionReachedMax && !canTranslate) {
             return p + 1;
-          } else if (isNotFirstSection && sectionReachedMin ) {
+          } else if (!isFirstSection && sectionReachedMin ) {
             return p - 1;
           }
           return p;
         });
       });
     },
-    [activeSectionIndex, sectionHeights, cssVariables, translate]
+    [
+      activeSectionIndex, 
+      sectionHeights, 
+      translate, 
+      onReachEnd,
+      onReachStart,
+      onChange,
+    ]
   );
 
-  const onMouseWheel = useCallback(
-    (e: any) => {
-      translateContent(
-        getLimintNumber(e.deltaY ?? e.wheelDeltaY, 10)
-      );
-    },
-    [translateContent]
-  );
+  const onMouseWheel = useCallback((e: any) => {
+    translateContent(
+      getLimintNumber(e.deltaY ?? e.wheelDeltaY, 15)
+    );
+  }, [translateContent]);
 
   const onTouchMove = useCallback((e: globalThis.TouchEvent) => {
     if (!touching.current) return;
     const touchMoveLength = touchStartPoint.current - e.changedTouches[0].clientY;
-    translateContent(
-      getLimintNumber(touchMoveLength, 50)
-    );
+    translateContent(touchMoveLength);
   }, [translateContent]);
 
   const onTouchStart = useCallback((e: globalThis.TouchEvent) => {
@@ -151,13 +169,22 @@ export function ScrollContainer(props: ScrollContainerProps) {
   }, [onMouseWheel, onTouchMove]);
 
   const sectionEls = sections.map((section, index) => {
+    const [contentBackground, contentTop] = section;
+    const height = sectionHeights[index];
     return (
       <div key={index} className={classes.section}>
+        {contentBackground}
         <div 
-          style={{ height: sectionHeights[index] + 'px' }}
+          style={{
+            height: height + 'px',
+            opacity: 
+              opaque && typeof window !== 'undefined' 
+                ? height / window.innerHeight 
+                : undefined
+          }}
           className={classes.sectionContent}
         >
-          {section}
+          {contentTop}
         </div>
       </div>
     );
@@ -167,7 +194,7 @@ export function ScrollContainer(props: ScrollContainerProps) {
     <div className={classes.container}>
       <div 
         className={classes.content}
-        style={{ transform: `translateY(-${translate}px)` }}
+        style={{ transform: `translateY(-${translate}px)`, }}
       >
         {sectionEls}
       </div>

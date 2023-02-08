@@ -5,13 +5,17 @@ import { useGlobalContext } from "@client/contexts/GlobalContext";
 import Link from "next/link";
 import { RxStar } from 'react-icons/rx';
 import { BiCart } from 'react-icons/bi';
+import { useHomeContext } from "@client/contexts/HomeContext";
+import classNames from 'classnames';
 
 function Navigation() {
   const { t } = useTranslation();
+  const { scrollStart } = useHomeContext();
   const headerRef = useRef<HTMLHeadElement>(null);
   const { 
     headData: { headerData, generalData },
     setCssVariables,
+    cssVariables,
     media
   } = useGlobalContext();
 
@@ -40,7 +44,15 @@ function Navigation() {
   }, [headerData]);
 
   return (
-    <header ref={headerRef} className={classes.navigation}>
+    <header 
+      ref={headerRef} 
+      style={
+        scrollStart 
+          ? { transform: `translateY(-${cssVariables.headerHeight}px` } 
+          : undefined
+      }
+      className={classes.navigation}
+    >
       <div className="container">
         <nav className={classes.content}>
           <div className={classes.group}>
