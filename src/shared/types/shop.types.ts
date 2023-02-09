@@ -66,3 +66,17 @@ export interface IHeadData {
   footerData: IFooterData;
   interfaceSettings: IInterfaceSettings;
 }
+
+export enum EButtonTypes {
+  PRIMARY = 'primary',
+  SECONDARY = 'secondary'
+}
+
+export type ButtonTypes = keyof typeof EButtonTypes;
+
+export interface IButton {
+  label: string;
+  url?: string;
+  type: ButtonTypes;
+}
+

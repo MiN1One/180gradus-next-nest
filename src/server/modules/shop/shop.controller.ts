@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from "@nestjs/common";
-import { IHeadData } from "@shared/types/shop.types";
 import { HeadDataDto } from "./dto/head-data.dto";
+import { HomeDto } from "./dto/home.dto";
 import { ShopService } from "./shop.service";
 
 @Controller('api/shop')
@@ -23,5 +23,11 @@ export class ShopController {
   @Get('index') 
   getHomePageData() {
     return this.shopService.getHomeData();
+  }
+
+  @Post('index')
+  async saveHomeData(@Body('home') homeData: HomeDto) {
+    await this.shopService.saveHomeData(homeData);
+    return homeData;
   }
 }

@@ -1,8 +1,9 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { createDir, readJsonFile } from "@server/utils/fs.utils";
-import { readFile, writeFile } from "fs/promises";
+import { writeFile } from "fs/promises";
 import { join } from "path";
 import { HeadDataDto } from "./dto/head-data.dto";
+import { HomeDto } from "./dto/home.dto";
 
 @Injectable()
 export class ShopService {
@@ -19,6 +20,17 @@ export class ShopService {
     } catch (er) {
       Logger.error(er, 'ShopService:getHeadData');
       return {};
+    }
+  }
+
+  async saveHomeData(homeData: HomeDto) {
+    try {
+      await writeFile(
+        this.savePath + '/index.json', 
+        JSON.stringify(homeData)
+      );
+    } catch (er) {
+      Logger.error(er, 'ShopService:saveHomeData');
     }
   }
 
