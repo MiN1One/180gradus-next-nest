@@ -11,7 +11,7 @@ import { UserModule } from './modules/user/user.module';
 import { ProductModule } from './modules/product/product.module';
 import { UploadModule } from './modules/upload/upload.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { ShopModule } from './modules/shop/shop.module';
+import { SettingsModule } from './modules/shop/settings.module';
 
 declare const module: any;
 
@@ -49,7 +49,7 @@ export class AppModule {
         OrderModule,
         DeviceModule,
         UploadModule,
-        ShopModule,
+        SettingsModule,
       ],
       controllers: [AppController],
       providers: [AppService],

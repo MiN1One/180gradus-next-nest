@@ -1,14 +1,14 @@
 import { LinkItemDto } from "@server/dto/link-item.dto";
+import { LocaleRecordDto } from "@server/dto/locale.dto";
+import { LocaleRecord } from "@shared/types/locale.types";
 import {
   EItemRoles,
-  IInterfaceSettings,
+  IStoreSettings,
   IFooterData,
-  IGeneralData,
-  IHeadData,
-  IHeaderData,
+  IGeneralData, IHeaderData,
   ILinkItem,
   ILogo
-} from "@shared/types/shop.types";
+} from "@shared/types/settings.types";
 import { Type } from "class-transformer";
 import {
   IsArray,
@@ -18,7 +18,7 @@ import {
   IsString,
   ValidateNested
 } from "class-validator";
-import { ColorsDto } from "./colots.dto";
+import { StoreSettingsDto } from "./settings-data.dto";
 
 class HeaderDataDto implements IHeaderData {
   @IsArray()
@@ -36,7 +36,7 @@ class HeaderDataDto implements IHeaderData {
   logo: string;
 }
 
-class FooterDataDto implements IFooterData {
+class FooterDataDto {
   @IsBoolean()
   showBreadcrumbs: boolean;
 
@@ -50,12 +50,16 @@ class FooterDataDto implements IFooterData {
   @Type(() => LinkItemDto)
   links: ILinkItem[];
 
-  @IsString()
-  copyrightText: string;
+  @IsObject()
+  @ValidateNested()
+  @Type(() => LocaleRecordDto)
+  copyrightText: LocaleRecord;
 
-  @IsString()
+  @IsObject()
+  @ValidateNested()
   @IsOptional()
-  additionalText?: string;
+  @Type(() => LocaleRecordDto)
+  additionalText: LocaleRecord;
 }
 
 class LogosDto implements ILogo {
@@ -66,7 +70,7 @@ class LogosDto implements ILogo {
   role: keyof typeof EItemRoles;
 }
 
-class GeneralDataDto implements IGeneralData {
+class GeneralDataDto {
   @IsString()
   company: string;
 
@@ -76,8 +80,10 @@ class GeneralDataDto implements IGeneralData {
   @IsString()
   email: string;
 
-  @IsString()
-  description: string;
+  @IsObject()
+  @ValidateNested()
+  @Type(() => LocaleRecordDto)
+  description: LocaleRecord;
 
   @IsString()
   logo?: string;
@@ -89,7 +95,7 @@ class GeneralDataDto implements IGeneralData {
   logos: ILogo[];
 }
 
-export class HeadDataDto implements IHeadData {
+export class HeadDataDto {
   @ValidateNested()
   @IsObject()
   @Type(() => HeaderDataDto)
@@ -107,6 +113,6 @@ export class HeadDataDto implements IHeadData {
 
   @ValidateNested()
   @IsObject()
-  @Type(() => ColorsDto)
-  interfaceSettings: IInterfaceSettings;
+  @Type(() => StoreSettingsDto)
+  interfaceSettings: IStoreSettings;
 }

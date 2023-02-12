@@ -1,3 +1,5 @@
+import { ILocaleString } from "./locale.types";
+
 export interface IImage {
   src: string;
   width?: number;
@@ -5,7 +7,7 @@ export interface IImage {
 }
 
 export interface ILinkItem {
-  label: string;
+  label: ILocaleString;
   value?: string;
   url: string;
 }
@@ -44,7 +46,7 @@ export interface IGeneralData {
   phoneNumber: string;
 }
 
-export interface IInterfaceSettings {
+export interface IStoreSettings {
   colorPrimary: string;
   colorSecondary: string;
   colorTertiary: string;
@@ -64,7 +66,7 @@ export interface IHeadData {
   generalData: IGeneralData;
   headerData: IHeaderData;
   footerData: IFooterData;
-  interfaceSettings: IInterfaceSettings;
+  interfaceSettings: IStoreSettings;
 }
 
 export enum EButtonTypes {

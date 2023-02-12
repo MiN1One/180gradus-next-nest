@@ -45,5 +45,5 @@ export const fetchHeadData = async (
   ...namespaces: string[]
 ) => ({
   ...(await serverSideTranslations(locale, ['common', ...namespaces])),
-  headData: await fetchData('/api/shop', locale)
+  headData: await fetchData('/api/settings', locale)
 });

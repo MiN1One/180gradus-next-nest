@@ -1,6 +1,5 @@
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import classes from './ScrollContainer.module.scss';
-import { useGlobalContext } from "@client/contexts/GlobalContext";
 import { getLimintNumber } from "@client/utils/number.utils";
 
 interface ScrollContainerProps {
@@ -15,6 +14,9 @@ interface ScrollContainerProps {
   opaque?: boolean;
 }
 
+const DESKTOP_MAX_SCROLL_SPEED = 20;
+// const MOBILE_MAX_SCROLL_SPEED = 15;
+
 export function ScrollContainer(props: ScrollContainerProps) {
   const {
     sections,
@@ -23,7 +25,6 @@ export function ScrollContainer(props: ScrollContainerProps) {
     onReachStart,
     onChange,
   } = props;
-  const { cssVariables } = useGlobalContext();
   const [translate, setTranslate] = useState(0);
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
   const touchStartPoint = useRef(0);
@@ -31,6 +32,11 @@ export function ScrollContainer(props: ScrollContainerProps) {
   const [sectionHeights, setSectionHeights] = useState(
     sections.map(() => 0)
   );
+  const [renderedCmp, setRenderedCmp] = useState(false);
+
+  useEffect(() => {
+    setRenderedCmp(true);
+  }, []);
 
   const changeSectionHeight = useCallback(
     (index: number, height: number) => {
@@ -136,7 +142,10 @@ export function ScrollContainer(props: ScrollContainerProps) {
 
   const onMouseWheel = useCallback((e: any) => {
     translateContent(
-      getLimintNumber(e.deltaY ?? e.wheelDeltaY, 15)
+      getLimintNumber(
+        e.deltaY ?? e.wheelDeltaY, 
+        DESKTOP_MAX_SCROLL_SPEED
+      )
     );
   }, [translateContent]);
 
@@ -175,13 +184,17 @@ export function ScrollContainer(props: ScrollContainerProps) {
       <div key={index} className={classes.section}>
         {contentBackground}
         <div 
-          style={{
-            height: height + 'px',
-            opacity: 
-              opaque && typeof window !== 'undefined' 
-                ? height / window.innerHeight 
-                : undefined
-          }}
+          style={
+            typeof window !== 'undefined' && renderedCmp
+              ? {
+                height: height + 'px',
+                opacity: 
+                  opaque
+                    ? height / window.innerHeight 
+                    : undefined
+              } 
+              : undefined
+          }
           className={classes.sectionContent}
         >
           {contentTop}

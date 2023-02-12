@@ -1,7 +1,7 @@
-import { IInterfaceSettings } from "@shared/types/shop.types";
+import { IStoreSettings } from "@shared/types/settings.types";
 import { IsOptional, IsString } from "class-validator";
 
-export class ColorsDto implements IInterfaceSettings {
+export class StoreSettingsDto implements IStoreSettings {
   @IsString()
   colorPrimary: string;
 

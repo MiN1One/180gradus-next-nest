@@ -4,6 +4,14 @@ export enum ELocales {
   uz = 'O\'zbek'
 }
 
-export type TranslationsRecord = Record<LocaleTypes, string>;
+export interface ILocaleString {
+  localeContent: string;
+}
 
 export type LocaleTypes = keyof typeof ELocales;
+
+export const localeKeys = Object.keys(ELocales);
+
+export const localesLength = localeKeys.length;
+
+export type LocaleRecord = Record<LocaleTypes, string>;

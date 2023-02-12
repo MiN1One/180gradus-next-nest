@@ -1,17 +1,20 @@
 import Layout from '@client/components/Common/Layout';
-import HomeContent from '@client/components/HomeContent/HomeContent';
+import HomeSections from '@client/components/HomeSections/HomeSections';
 import { HomeContextProvider } from '@client/contexts/HomeContext';
-import { fetchHeadData } from '@client/utils/fetch.utils';
+import { fetchData, fetchHeadData } from '@client/utils/fetch.utils';
+import { IHomeData } from '@shared/types/home.types';
+import { localeKeys } from '@shared/types/locale.types';
 import { GetStaticProps } from 'next';
 
 interface HomePageProps {
+  homeSettings: IHomeData;
 }
 
 function IndexPage(props: HomePageProps) {
   return (
-    <HomeContextProvider>
+    <HomeContextProvider initialSettings={props.homeSettings}>
       <Layout>
-        <HomeContent />
+        <HomeSections />
       </Layout>
     </HomeContextProvider>
   );
@@ -19,9 +22,15 @@ function IndexPage(props: HomePageProps) {
 
 export const getStaticProps: GetStaticProps<HomePageProps> = 
   async ({ locale, defaultLocale }) => {
+    const userLocale = locale || defaultLocale || localeKeys[0];
+    const [headData, homeSettings] = await Promise.all([
+      fetchHeadData(userLocale),
+      fetchData('/api/settings/index', userLocale)
+    ]);
     return {
       props: {
-        ...(await fetchHeadData(locale || defaultLocale))
+        ...headData,
+        homeSettings,
       },
       revalidate: 100,
     };

@@ -6,7 +6,7 @@ import {
 import { ConfigType } from "@nestjs/config";
 import AppConfig from "@server/app.config";
 import { IFile, IMAGE_QUALITIES } from "@shared/types/common.types";
-import { IImage } from "@shared/types/shop.types";
+import { IImage } from "@shared/types/settings.types";
 import * as sharp from 'sharp';
 import { join } from 'path';
 import { createDir, removeDir } from "@server/utils/fs.utils";

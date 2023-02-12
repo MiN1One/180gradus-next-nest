@@ -1,7 +1,7 @@
-import { IInterfaceSettings } from "@shared/types/shop.types";
+import { IStoreSettings } from "@shared/types/shop.types";
 
 interface ColorsProviderProps {
-  interfaceSettings: IInterfaceSettings;
+  interfaceSettings: IStoreSettings;
 }
 
 export function ColorsProvider({ interfaceSettings }: ColorsProviderProps) {

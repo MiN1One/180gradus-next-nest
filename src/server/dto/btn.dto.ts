@@ -1,9 +1,14 @@
-import { ButtonTypes, IButton } from "@shared/types/shop.types";
-import { IsOptional, IsString } from "class-validator";
+import { LocaleRecord } from "@shared/types/locale.types";
+import { ButtonTypes } from "@shared/types/settings.types";
+import { Type } from "class-transformer";
+import { IsObject, IsOptional, IsString, ValidateNested } from "class-validator";
+import { LocaleRecordDto } from "./locale.dto";
 
-export class BtnDto implements IButton {
-  @IsString()
-  label: string;
+export class BtnDto {
+  @IsObject()
+  @ValidateNested()
+  @Type(() => LocaleRecordDto)
+  label: LocaleRecord;
 
   @IsOptional()
   @IsString()

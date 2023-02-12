@@ -6,7 +6,6 @@ import Link from "next/link";
 import { RxStar } from 'react-icons/rx';
 import { BiCart } from 'react-icons/bi';
 import { useHomeContext } from "@client/contexts/HomeContext";
-import classNames from 'classnames';
 
 function Navigation() {
   const { t } = useTranslation();
@@ -24,11 +23,11 @@ function Navigation() {
       ...prev,
       headerHeight: headerRef.current.offsetHeight
     }));
-  }, [media]);
+  }, [media]); 
 
   const navigationItemEls = useMemo(() => {
     return headerData.links.map((el, index) => {
-      const label = t(el.value);
+      const label = el.label.localeContent as string;
       return (
         <li
           key={el.value || index}

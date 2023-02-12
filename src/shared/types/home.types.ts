@@ -1,12 +1,17 @@
-import { IButton, IImage } from "./shop.types";
+import { ILocaleString } from "./locale.types";
+import { IButton, IImage } from "./settings.types";
 
 export interface IHomeSection {
-  title: string;
-  subtitle?: string;
-  imageBg?: IImage | string;
-  imageCover?: IImage | string;
   order: number;
-  actions: IButton[];
+  blockTop: IHomeBlock;
+  blockBottom: IHomeBlock;
+}
+
+export interface IHomeBlock {
+  title: ILocaleString;
+  subtitle?: ILocaleString;
+  imageCover?: IImage | string;
+  actions?: IButton[];
 }
 
 export interface IHomeData {

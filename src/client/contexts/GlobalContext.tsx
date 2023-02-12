@@ -1,11 +1,9 @@
 import useMedia from "@client/hooks/useMedia";
 import { StateSetter } from "@client/interfaces/util.interface";
 import React, {
-  createContext, FC, useContext,
-  useEffect,
-  useState
+  createContext, FC, useContext, useState
 } from "react";
-import { IHeadData } from '@shared/types/shop.types';
+import { IHeadData } from '@shared/types/settings.types';
 import CssVariables from "@client/components/Common/CssVariables";
 import { IVariables } from "@client/interfaces/variables.interface";
 

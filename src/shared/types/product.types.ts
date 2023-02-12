@@ -1,5 +1,5 @@
 import { MongoDocument } from "./common.types";
-import { IImage } from "@shared/types/shop.types";
+import { IImage } from "@shared/types/settings.types";
 import { IDevice } from "./device.types";
 
 export enum EProductType {

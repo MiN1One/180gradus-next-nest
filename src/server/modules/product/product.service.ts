@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { createDir } from "@server/utils/fs.utils";
-import { TranslationsRecord } from "@shared/types/locale.types";
+import { LocaleRecord } from "@shared/types/locale.types";
 import { IProduct } from "@shared/types/product.types";
 import { writeFile } from "fs/promises";
 import { join } from "path";
@@ -37,7 +37,7 @@ export class ProductService {
 
   async saveTranslations(
     productHandle: string, 
-    translations: TranslationsRecord
+    translations: LocaleRecord
   ) {
     try {
       const fileName = `${productHandle}.json`;
@@ -56,7 +56,7 @@ export class ProductService {
 
   async createProduct(
     product: IProduct, 
-    translations: TranslationsRecord
+    translations: LocaleRecord
   ) {
     await this.saveTranslations(
       product.title.handleize(), 

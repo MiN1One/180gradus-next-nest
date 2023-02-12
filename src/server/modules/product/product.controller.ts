@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@server/guards/auth.guard";
-import { TranslationsRecord } from "@shared/types/locale.types";
+import { LocaleRecord } from "@shared/types/locale.types";
 import { IProduct } from "@shared/types/product.types";
 import { ProductService } from "./product.service";
 
@@ -28,7 +28,7 @@ export class ProductController {
   @UseGuards(AuthGuard('MAINTAINER', 'ADMIN'))
   updateTranslations(
     @Param('productHandle') productHandle: string,
-    @Body('translations') translations: TranslationsRecord,
+    @Body('translations') translations: LocaleRecord,
   ) {
     return this.productService.saveTranslations(productHandle, translations);
   }
@@ -37,7 +37,7 @@ export class ProductController {
   @UseGuards(AuthGuard('ADMIN'))
   createProduct(
     @Body('product') product: IProduct,
-    @Body('translations') translations: TranslationsRecord
+    @Body('translations') translations: LocaleRecord
   ) {
     return this.productService.createProduct(product, translations);
   }

@@ -1,15 +1,17 @@
-import { ILinkItem } from "@shared/types/shop.types";
-import { Transform } from "class-transformer";
-import { IsString, ValidateIf } from "class-validator";
+import { LocaleRecord } from "@shared/types/locale.types";
+import { Type } from "class-transformer";
+import { IsObject, IsOptional, IsString, ValidateNested } from "class-validator";
+import { LocaleRecordDto } from "./locale.dto";
 
-export class LinkItemDto implements ILinkItem {
+export class LinkItemDto {
   @IsString()
-  @ValidateIf(({ label }) => Boolean(label))
-  @Transform(({ obj }) => obj.label.handleize())  
+  @IsOptional()
   value?: string;
 
-  @IsString()
-  label: string;
+  @IsObject()
+  @ValidateNested()
+  @Type(() => LocaleRecordDto)
+  label: LocaleRecord;
 
   @IsString()
   url: string;

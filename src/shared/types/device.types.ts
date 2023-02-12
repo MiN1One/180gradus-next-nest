@@ -1,6 +1,6 @@
 import { MongoDocument } from "./common.types";
 import { IProduct } from "./product.types";
-import { IImage } from "@shared/types/shop.types";
+import { IImage } from "@shared/types/settings.types";
 
 export enum EDeviceType {
   PHONE = 'Phone',
