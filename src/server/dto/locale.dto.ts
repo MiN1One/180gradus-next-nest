@@ -13,9 +13,9 @@ class LocaleStringDto implements LocaleRecord  {
   uz: string;
 }
 
-export class LocaleRecordDto implements ILocaleString {
+export class LocaleRecordDto {
   @ValidateNested()
   @IsObject()
   @Type(() => LocaleStringDto)
-  localeContent: LocaleRecord;
+  localeContent: string;
 }

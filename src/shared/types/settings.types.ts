@@ -6,24 +6,24 @@ export interface IImage {
   height?: number;
 }
 
-export interface ILinkItem {
-  label: ILocaleString;
+export interface ILinkItem<T = ILocaleString> {
+  label: T;
   value?: string;
   url: string;
 }
 
-export interface IHeaderData {
-  links: ILinkItem[];
+export interface IHeaderData<T = ILocaleString> {
+  links: ILinkItem<T>[];
   showCart: boolean;
   showFavorites: boolean;
   logo: string;
 }
 
-export interface IFooterData {
-  links: ILinkItem[];
-  socialLinks: ILinkItem[];
-  copyrightText: string;
-  additionalText?: string;
+export interface IFooterData<T = ILocaleString> {
+  links: ILinkItem<T>[];
+  socialLinks: ILinkItem<T>[];
+  copyrightText: T;
+  additionalText?: T;
   showBreadcrumbs: boolean;
 }
 
@@ -37,11 +37,11 @@ export interface ILogo {
   src: string;
 }
 
-export interface IGeneralData {
+export interface IGeneralData<T = ILocaleString> {
   company: string;
   logo?: string;
   logos: ILogo[];
-  description: string;
+  description: T;
   email: string;
   phoneNumber: string;
 }
@@ -62,10 +62,10 @@ export interface IStoreSettings {
   containerWidth: string;
 }
 
-export interface IHeadData {
-  generalData: IGeneralData;
-  headerData: IHeaderData;
-  footerData: IFooterData;
+export interface IHeadData<T = ILocaleString> {
+  generalData: IGeneralData<T>;
+  headerData: IHeaderData<T>;
+  footerData: IFooterData<T>;
   interfaceSettings: IStoreSettings;
 }
 
@@ -76,8 +76,8 @@ export enum EButtonTypes {
 
 export type ButtonTypes = keyof typeof EButtonTypes;
 
-export interface IButton {
-  label: string;
+export interface IButton<T = ILocaleString> {
+  label: T;
   url?: string;
   type: ButtonTypes;
 }

@@ -1,13 +1,14 @@
 import { LinkItemDto } from "@server/dto/link-item.dto";
 import { LocaleRecordDto } from "@server/dto/locale.dto";
-import { LocaleRecord } from "@shared/types/locale.types";
+import { ILocaleStringRecord } from "@shared/types/locale.types";
 import {
   EItemRoles,
   IStoreSettings,
   IFooterData,
   IGeneralData, IHeaderData,
   ILinkItem,
-  ILogo
+  ILogo,
+  IHeadData
 } from "@shared/types/settings.types";
 import { Type } from "class-transformer";
 import {
@@ -20,11 +21,11 @@ import {
 } from "class-validator";
 import { StoreSettingsDto } from "./settings-data.dto";
 
-class HeaderDataDto implements IHeaderData {
+class HeaderDataDto implements IHeaderData<ILocaleStringRecord> {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => LinkItemDto)
-  links: ILinkItem[];
+  links: ILinkItem<ILocaleStringRecord>[];
 
   @IsBoolean()
   showCart: boolean;
@@ -36,30 +37,30 @@ class HeaderDataDto implements IHeaderData {
   logo: string;
 }
 
-class FooterDataDto {
+class FooterDataDto implements IFooterData<ILocaleStringRecord> {
   @IsBoolean()
   showBreadcrumbs: boolean;
 
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => LinkItemDto)
-  socialLinks: ILinkItem[];
+  socialLinks: ILinkItem<ILocaleStringRecord>[];
 
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => LinkItemDto)
-  links: ILinkItem[];
+  links: ILinkItem<ILocaleStringRecord>[];
 
   @IsObject()
   @ValidateNested()
   @Type(() => LocaleRecordDto)
-  copyrightText: LocaleRecord;
+  copyrightText: ILocaleStringRecord;
 
   @IsObject()
   @ValidateNested()
   @IsOptional()
   @Type(() => LocaleRecordDto)
-  additionalText: LocaleRecord;
+  additionalText: ILocaleStringRecord;
 }
 
 class LogosDto implements ILogo {
@@ -70,7 +71,7 @@ class LogosDto implements ILogo {
   role: keyof typeof EItemRoles;
 }
 
-class GeneralDataDto {
+class GeneralDataDto implements IGeneralData<ILocaleStringRecord> {
   @IsString()
   company: string;
 
@@ -83,7 +84,7 @@ class GeneralDataDto {
   @IsObject()
   @ValidateNested()
   @Type(() => LocaleRecordDto)
-  description: LocaleRecord;
+  description: ILocaleStringRecord;
 
   @IsString()
   logo?: string;
@@ -95,21 +96,21 @@ class GeneralDataDto {
   logos: ILogo[];
 }
 
-export class HeadDataDto {
+export class HeadDataDto implements IHeadData<ILocaleStringRecord> {
   @ValidateNested()
   @IsObject()
   @Type(() => HeaderDataDto)
-  headerData: IHeaderData;
+  headerData: IHeaderData<ILocaleStringRecord>;
 
   @ValidateNested()
   @IsObject()
   @Type(() => FooterDataDto)
-  footerData: IFooterData;
+  footerData: IFooterData<ILocaleStringRecord>;
 
   @ValidateNested()
   @IsObject()
   @Type(() => GeneralDataDto)
-  generalData: IGeneralData;
+  generalData: IGeneralData<ILocaleStringRecord>;
 
   @ValidateNested()
   @IsObject()

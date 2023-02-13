@@ -8,6 +8,10 @@ export interface ILocaleString {
   localeContent: string;
 }
 
+export interface ILocaleStringRecord {
+  localeContent: LocaleRecord;
+}
+
 export type LocaleTypes = keyof typeof ELocales;
 
 export const localeKeys = Object.keys(ELocales);

@@ -2,9 +2,10 @@ import { useHomeContext } from "@client/contexts/HomeContext";
 import { memo, useCallback, useMemo } from "react";
 import { HomeBlockTop, HomeBlockBottom } from "../HomeBlock/HomeBlock";
 import { ScrollContainer } from "../ScrollContainer/ScrollContainer";
+import classes from './HomeSections.module.scss';
 
 function HomeSections() {
-  const { setScrollStart, homeSettings } = useHomeContext();
+  const { setScrollStart, homeSettings, scrollStart } = useHomeContext();
 
   const onStartScroll = useCallback(
     (height: number, _: number, index: number) => {
@@ -30,7 +31,10 @@ function HomeSections() {
   }, []);
 
   return (
-    <main>
+    <main 
+      data-scroll-active={scrollStart.toString()} 
+      className={classes.sections}
+    >
       <ScrollContainer
         onChange={onStartScroll}
         onReachStart={onScrollTop}
