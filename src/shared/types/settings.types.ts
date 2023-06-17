@@ -81,4 +81,3 @@ export interface IButton<T = ILocaleString> {
   url?: string;
   type: ButtonTypes;
 }
-
